@@ -1,0 +1,77 @@
+/* Style Sheet */
+body {
+    background-color: "lightgray";
+    background-image: "/download.jpg"
+  }
+
+  h1 {
+    color: mediumseagreen;
+    text-align: center;
+  }
+
+  h2 {
+    color: mediumseagreen;
+    text-align: center;
+  }
+
+  p {
+    color: mediumseagreen;
+    text-align: center;
+  }
+
+  .sansserif {
+    font-family: Verdana, sans-serif;
+  }
+
+  .dropbtn {
+    background-color: mediumseagreen;
+    color: white;
+    padding: 16px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  
+  .dropbtn:hover, .dropbtn:focus {
+    background-color: lightseagreen;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: lightseagreen;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 100;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+  }
+  
+  .dropdown a:hover {background-color: #ddd;}
+  
+  .show {display: block;}
+
+/* remove default margin and padding from body */
+body {
+    padding: 2000;
+    margin: 2000;
+  }
+  /* set map, body, and html to 100% of the screen size */
+  #map,
+  body,
+  html {
+    height: 100%;
+    z-index: 1;
+  }

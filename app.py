@@ -11,8 +11,7 @@ from flask_cors import CORS, cross_origin
 #################################################
 # Database Setup
 #################################################
-connection_string = "postgres:Brazil10@localhost:5432/Spotify_Project"
-engine = create_engine(f'postgresql://{connection_string}')
+engine = create_engine("postgres://iwmrxujo:3y_paPbLw9au1C16kHoCOJgz5aY-F63r@ruby.db.elephantsql.com:5432/iwmrxujo")
 
 # reflect an existing database into a new model
 Base = automap_base()
@@ -34,6 +33,31 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 # Flask Routes
 #################################################
 
+@app.route("/artist")
+@cross_origin()
+def top_artist():
+    conn = engine.connect()
+    sql = """
+    select * FROM (
+	select
+		country, artist, total_streams,
+		RANK() OVER (PARTITION BY country ORDER BY total_streams DESC) AS country_rank
+		FROM (
+			select
+				t."Country" AS country, t."Artist" as artist, SUM(t."Streams") AS total_streams
+				from
+					"Top200Worldwide" AS t
+			GROUP BY t."Country", t."Artist"
+		) AS query
+	) AS ranks
+    WHERE country_rank = 1
+    """
+    results = conn.execute(sql)
+
+    for artist in results:
+        print(f"{artist['artist']} had {artist['total_streams']} streams in {artist['country']}")
+    return "yay"
+
 @app.route("/spotify")
 @cross_origin()
 def spotify():
@@ -52,22 +76,31 @@ def spotify():
         new_song["id"] = song.pk
         songs.append(new_song)
 
+    session.close()
     return jsonify(songs)
 
-@app.route("/")
-def welcome():
-    """List all available api routes."""
-    return (
-        f"Available Routes:<br/>"
-        f"/api/v1.0/names<br/>"
-        f"/api/v1.0/passengers"
-    )
+# @app.route("/globe")
+# def globe():
+#     session = Session(engine)
+#     results = session.query(Globe).all()
+#     globe = []
+
+#     pd.read_sql_query('select streams from artist', con=engine).head()
 
 
-@app.route("/api/v1.0/names")
-def names():
-    # Create our session (link) from Python to the DB
-    session = Session(engine)
+
+# streams from
+# table
+# group by artist_name
+# order by streams desc
+# limit 1
+
+
+
+# @app.route("/api/v1.0/names")
+# def names():
+#     # Create our session (link) from Python to the DB
+#     session = Session(engine)
 
     """Return a list of all passenger names"""
     # Query all passengers
